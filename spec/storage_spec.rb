@@ -32,7 +32,6 @@ describe MarkovSpeech::Storage do
       # Fuck it, we'll verify in generation.
       expect(Chain).to receive(:new).and_return(chain)
 
-      expect(word).to receive(:save!)
       expect(chain).to receive(:save!)
 
         expect(Word).to receive(:find_or_create_by).with(text: w)
@@ -46,12 +45,17 @@ describe MarkovSpeech::Storage do
       text = "test test1 test2 test3 test4"
       msg = subject.store(text)
       subject.process(msg)
-      words = Word.last(5)
 
+      words = Word.last(5)
       text.split(/\s/).zip(words).each do |pair|
         real, stored = *pair
         expect(stored.text).to eq(real)
       end
+
+      chains = Chain.last(5)
+      text.split(/\s/).zip(chains).each_with_index do |pair, index|
+      end
+
     end
   end
 end
