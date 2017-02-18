@@ -1,0 +1,44 @@
+module Markov
+  module Storage
+    module Processing
+      # https://github.com/LinuxMercedes/markovirc/blob/master/modules/sever.rb
+      # Intelligently split a sentence by punctuation, then split the individual spaces
+      # so we get words.
+      # Returns an array of arrays of words. The inner array is split by punctuation.
+      def sever(text)
+        # Quotes are stripped as alignment is tricky.
+        text.gsub!(/"/, "")
+        # Switch encoding to remove color
+        text = text.encode('UTF-8', :invalid => :replace, :undef => :replace, :replace => '')
+
+        sentences = text.scan(/([^\.!:\?,]+)([\.!\?:,]+)?/)
+        # If it's only punctuation, it returns nil
+        sentences = [ text ] if sentences.size == 0
+
+        sentences.flatten!
+        sentences.compact!
+
+        last = 0
+        while last != sentences.length
+          last = sentences.length
+
+          # Inspect for smashed urls
+          sentences.length.times do |i|
+            if sentences[i] =~ /^[\.!?:]+$/ and sentences.length > i+1 and sentences[i+1][0] !~ /[\s]/
+              sentences[i-1] = sentences[(i-1)..(i+1)].join ''
+              sentences.delete_at i
+              sentences.delete_at i
+              break
+            end
+          end
+        end
+
+        sentences.map! { |x| x.split(/\s+/) }
+        sentences.flatten!
+        sentences.delete_if { |x| x == "" }
+
+        return sentences
+      end
+    end
+  end
+end
