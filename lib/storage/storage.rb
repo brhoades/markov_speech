@@ -1,5 +1,5 @@
 require_relative '../../environment.rb'
-require_relative 'sever.rb'
+require_relative 'processing.rb'
 
 module Markov
   module Storage
@@ -13,25 +13,23 @@ module Markov
         src
       end
 
-      private
       def self.process(source)
-        sentences = sever(source.text)
+        sentence = Processor.sever(source.text)
 
-        sentences.map! do |sentence|
-          sentence.map! do |word|
-            Word.first_or_initialize(word) { |w| w.save! }
-          end
+        sentence_p = []
+        sentence.each do |word|
+          w = Word.find_or_create_by(text: word)
+
+          sentence_p << w
         end
-        sentence.flatten!
 
-        sentences.each_with_index do |word, i|
-          next_word = nil
-
-          if i != sentences.size - 1
-            next_word = sentences[i + 1]
-          end
-
-          Chain.new("next": next_word, source: source)
+        last = nil
+        # This word
+        # Word this
+        # { text: word, next: nil }, {text: this, next: <-- }
+        sentence_p.reverse.each_with_index do |word, i|
+          last = Chain.new("next": last, word: word, source: source)
+          last.save!
         end
       end
     end
