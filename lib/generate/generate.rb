@@ -47,7 +47,6 @@ module Markov
 
       def chain_loop
         while @dir != :DONE
-          print "#{@sentence}\n"
           if @dir == :RIGHT
             chain_right
           elsif @dir == :LEFT

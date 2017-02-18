@@ -46,16 +46,13 @@ describe MarkovSpeech::Storage do
       msg = subject.store(text)
       subject.process(msg)
 
-      words = Word.last(5)
-      text.split(/\s/).zip(words).each do |pair|
-        real, stored = *pair
-        expect(stored.text).to eq(real)
+      text.split(/\s/).each do |real|
+        expect(Word.where(text: real)).not_to be_empty
       end
 
       chains = Chain.last(5)
       text.split(/\s/).zip(chains).each_with_index do |pair, index|
       end
-
     end
   end
 end
