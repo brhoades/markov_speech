@@ -1,7 +1,7 @@
 module Markov
   module Generate
     class Generate
-      def initialize(chain_length=5, max_in_dir=10)
+      def initialize(chain_length=5, max_in_dir=15)
         @sentence = []
         @chain_length = chain_length
 
@@ -23,8 +23,17 @@ module Markov
         # Randomly choose first chain
         @sentence << get_chain(word.first)
 
+        # First chain is half length as we return to it for the
+        # first portion
+        @current_source_remaining = @chain_length / 2
+
         chain_loop
-        @sentence.map { |c| c.word.text }.join(" ")
+        @sentence
+      end
+
+      def to_s
+        sent = @sentence.map { |c| c.word.text }.join(" ")
+        sent.gsub(/\s([;\:,\.\!\?]{1})/, '\1')
       end
 
       private
@@ -41,7 +50,6 @@ module Markov
       def get_current_source
         return if @current_source_remaining > 0
 
-        puts @sentence.map { |s| s.word.text }
         @current_source_remaining = @chain_length
         if @dir == :RIGHT
           get_chain(@sentence.last.word)
@@ -71,6 +79,11 @@ module Markov
         else
           @dir = :LEFT
           @max_in_dir_remaining = @max_in_dir
+
+          # When we flip, use our original source for a while. This
+          # spreads out the chain source points from the center.
+          @current_source = @sentence.first.source
+          @current_source_remaining = @chain_length / 2
           return
         end
       end
