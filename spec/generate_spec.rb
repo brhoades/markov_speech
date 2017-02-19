@@ -123,63 +123,6 @@ describe MarkovSpeech::Generate do
           end
         end
       end
-
-      xcontext "and chain length is equal to their size" do
-        before do
-          originals = [
-            "0 1 2 3 4 5",
-            "5 6 7 8 9 10"
-          ]
-          originals.map { |original|
-            Markov::Storage::Storage.process(Markov::Storage::Storage.store(original))
-          }
-        end
-
-        it 'the generated output is the complete string when starting from the beginning' do
-          expect(subject.chain("0")).to eq("0 1 2 3 4 5 6 7 8")
-        end
-
-        it 'the generated output is the complete string when starting from the end' do
-          expect(subject.chain("6")).to eq("0 1 2 3 4 5 6 7 8")
-        end
-
-        it 'the generated output is the complete string when starting from the middle' do
-          expect(subject.chain("6")).to eq("0 1 2 3 4 5 6 7 8")
-        end
-      end
-
-      xcontext "and chain length is smaller than their size" do
-        let(:originals) { [
-                            "3 4 5 6 7 8 9 10",
-                            "11 12 13 14 15 16"
-                          ] }
-
-        let(:full) { "3 4 5 6 7 8 9 10 11 12 13 14 15 16" }
-
-        before do
-          originals.map { |original|
-            Markov::Storage::Storage.process(Markov::Storage::Storage.store(original))
-          }
-        end
-
-        it 'the generated output is the first original starting from the beginning' do
-          expect(subject.chain("3")).to eq(original.first)
-        end
-
-        it 'the generated output is the second original startin from the end' do
-          expect(subject.chain("16")).to eq(original.last)
-        end
-
-        it 'the generated output is the complete string when starting from the middle' do
-          expect(subject.chain("10")).to eq(full)
-        end
-
-        it 'the generated output is the complete string when starting from other spots in the string' do
-          ["4", "5", "6", "7", "8", "9", "11", "12", "13", "14", "15"].each do |start|
-            expect(subject.chain(start)).to eq(full)
-          end
-        end
-      end
     end
   end
 end

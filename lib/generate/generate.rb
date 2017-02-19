@@ -1,7 +1,7 @@
 module Markov
   module Generate
     class Generate
-      def initialize(chain_length=5, max_in_dir=15)
+      def initialize(chain_length=5, max_in_dir=20)
         @sentence = []
         @chain_length = chain_length
 
