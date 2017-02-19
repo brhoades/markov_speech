@@ -48,7 +48,7 @@ module Markov
           score += 0.1
         end
 
-        score += sentence_repitition(sentence) * 0.2
+        score += (1 - sentence_repitition(sentence)) * 0.2
 
         # Stretch the score until I find more metrics
         score / 0.5
@@ -64,7 +64,7 @@ module Markov
       # Get the number of nonduplicate sequences of this count:
       #   [5, 6, 2], [6, 2, 3], [2, 3, 2], [2, 1, 3]
       #   [1, 3, 2], [2, 1, 2], [1, 2, 2] (7 count)
-      # Then: (unique sequences) / (all sequences) (2/7)
+      # Then: (duplicate sequences) / (all sequences) (2/7)
       #
       # This is then repeated up to half the # of chains. That amount is averaged
       # and returned (and is [0,1]).
