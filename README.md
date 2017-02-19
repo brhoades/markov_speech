@@ -1,8 +1,8 @@
 # MarkovSpeech
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/markov_speech`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem encapsulates some functionality from https://github.com/LinuxMercedes/markovirc/ in a modular format.
+It allows storage of source text for Markov text generation and also utility methods for generating text from
+that source text.
 
 ## Installation
 
@@ -19,10 +19,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install markov_speech
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Development
 
