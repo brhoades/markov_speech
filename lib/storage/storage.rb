@@ -1,10 +1,15 @@
 require_relative '../../environment.rb'
 require_relative 'processing.rb'
 
+require_relative "models/chain.rb"
+require_relative "models/word.rb"
+require_relative "models/source.rb"
+
 module Markov
   module Storage
     class Storage
       include Markov::Storage::Processing
+      include Markov::Models
 
       def self.store(message)
         src = Source.new(text: message)
