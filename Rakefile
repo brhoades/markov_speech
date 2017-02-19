@@ -9,10 +9,7 @@ task :default => :spec
 
 Bundler::GemHelper.install_tasks
 
-desc "Run migrations"
-task :migrate do
-  ActiveRecord::Migrator.migrate("db/migrations", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
-end
+import "./lib/tasks/database.rake"
 
 task :testmigrate do
   configuration = YAML::load(File.open('spec/database.yml'))

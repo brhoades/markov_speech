@@ -16,8 +16,12 @@ module Markov
         return "" if seed_word == ""
         word = Word.where(text: seed_word)
 
+        if word.size == 0
+          return "Unknown word"
+        end
+
         # Randomly choose first chain
-        @sentence << get_chain(word)
+        @sentence << get_chain(word.first)
 
         chain_loop
         @sentence.map { |c| c.word.text }.join(" ")
@@ -35,8 +39,9 @@ module Markov
       end
 
       def get_current_source
-        return if @current_source_remaining != 0
+        return if @current_source_remaining > 0
 
+        puts @sentence.map { |s| s.word.text }
         @current_source_remaining = @chain_length
         if @dir == :RIGHT
           get_chain(@sentence.last.word)
@@ -74,7 +79,7 @@ module Markov
         get_current_source
         @current_source_remaining -= 1
 
-        chains = Chain.where("next": @sentence.first, source: @current_source)
+        chains = Chain.where(source: @current_source, "next": Chain.where(source: @current_source, word: @sentence.first.word))
         if chains.size > 0 and @max_in_dir_remaining != 0
           @sentence.unshift(chains.first)
           @max_in_dir_remaining -= 1
