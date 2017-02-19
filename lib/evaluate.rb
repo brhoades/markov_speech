@@ -57,14 +57,14 @@ module Markov
       # Return an average percentage of duplicate chain sequences from n=2 to sentence.size / 2.
       #
       #----- Examples
-      # For example:
+      # For example (w/ n=3):
       #   [5, 6, 2, 3, 2, 1, 3, 2, 1, 2, 2]
       # Duplicate sequences:
       #   [3, 2, 1] (2 count)
       # Get the number of nonduplicate sequences of this count:
-      #   [5, 6, 2], [6, 2, 3], [2, 3, 2], [2, 1, 3], [1, 3, 2], [2, 1, 2], [1, 2, 2],
-      #   [2, 2, nil] (8 count)
-      # Then: (unique sequences) / (all sequences)
+      #   [5, 6, 2], [6, 2, 3], [2, 3, 2], [2, 1, 3]
+      #   [1, 3, 2], [2, 1, 2], [1, 2, 2] (7 count)
+      # Then: (unique sequences) / (all sequences) (2/7)
       #
       # This is then repeated up to half the # of chains. That amount is averaged
       # and returned (and is [0,1]).
@@ -92,20 +92,20 @@ module Markov
 
       # slice_into_chains(Array array, Integer n)
       #
-      # Given an array, slice it into n-sized arrays with the last one being nil-terminated.
+      # Given an array, slice it into n-sized array.
       #
       #---- Examples
       # array = [1, 2, 3, 4]
       # n = 2
       #
       # $ slice_into_chains(array, n)
-      # => [[1, 2], [2, 3], [3, 4], [4, nil]]
+      # => [[1, 2], [2, 3], [3, 4]]
       #
       # array = [1, 2, 3, 4, 5, 6]
       # n = 3
       #
       # $ slice_into_chains(array, n)
-      # => [[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, nil]]
+      # => [[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6]]
       def self.slice_into_chains(array, n)
         chunks = []
 
