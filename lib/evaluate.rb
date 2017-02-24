@@ -35,7 +35,7 @@ module Markov
         end
 
         # Last word is punctuation or a link
-        if sentence.last.word.text =~ /[[:punct"]]+$/ or sentence.last.word.text =~ URI::regexp
+        if sentence.last.word.text =~ /[[:punct:]]+$/ or sentence.last.word.text =~ URI::regexp
           score += 0.1
         end
 
